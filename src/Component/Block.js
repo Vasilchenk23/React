@@ -1,5 +1,5 @@
 import "./../Component/style.css";
-import cansel from "./../img/cancel.png"
+import cancel from "./../img/cancel.png"
 import ok from "./../img/ok.png";
 import pen from "./../img/pen.png";
 import trash from "./../img/trash.png";
@@ -7,19 +7,22 @@ import React, { useState } from 'react';
 
 const Block = () => {
   const [list, setList] = useState([]);
-  const [image, setImage] = useState(cansel);
+  const [images, setImages] = useState([]);
 
   const handleAdd = () => {
     const newInput = document.querySelector('input').value;
     if (newInput && list.length < 10) {
       setList([...list, newInput]);
+      setImages([...images, false]); 
       document.querySelector('input').value = '';
     }
   };
 
   const handleDelete = (index) => {
     const newList = list.filter((item, i) => i !== index);
+    const newImages = images.filter((item, i) => i !== index);
     setList(newList);
+    setImages(newImages);
   };
 
   const handleKeyDown = (event) => {
@@ -28,29 +31,33 @@ const Block = () => {
     }
   };
 
-  const toggleImage = () => {
-    setImage(image === cansel ? ok : cansel);
+  const toggleImage = (index) => {
+    const newImages = [...images];
+    newImages[index] = !newImages[index];
+    setImages(newImages);
   };
 
   const handleEdit = (index) => {
     const itemToEdit = list[index];
     document.querySelector('input').value = itemToEdit;
     const newList = list.filter((item, i) => i !== index);
+    const newImages = images.filter((item, i) => i !== index);
     setList(newList);
+    setImages(newImages);
   }
 
   return (
     <>
       <div className="block">
-        <h1 className="block_name">To Do List</h1>
-        <input placeholder="Enter a To Do List" type="text" onKeyDown={handleKeyDown} maxLength={30} />
-        <button className="add" onClick={handleAdd}>Add</button>
+          <h1 className="block_name">To Do List</h1>
+            <input placeholder="Enter a To Do List" type="text" onKeyDown={handleKeyDown} maxLength={30} />
+          <button className="add" onClick={handleAdd}>Add</button>
         <div className="list">
           {list.map((item, index) => (
             <div key={index} className={`list${index + 1}`}>
               <h1>{item}</h1>
               <div className="list_button1">
-                <button><img src={image} onClick={toggleImage} alt="" /></button>
+                <button><img src={images[index] ? ok : cancel} onClick={() => toggleImage(index)} alt="" /></button>
                 <button><img src={pen} alt="" onClick={() => handleEdit(index)} /></button>
                 <button><img onClick={() => handleDelete(index)} src={trash} alt="" /></button>
               </div>
@@ -63,6 +70,7 @@ const Block = () => {
 };
 
 export default Block;
+
 
 
 
