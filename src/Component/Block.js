@@ -55,8 +55,8 @@ const Block = () => {
         <div className="list">
           {list.map((item, index) => (
             <div key={index} className={`list${index + 1}`}>
-              <h1>{item}</h1>
-              <div className="list_button1">
+                <h1>{item}</h1>
+                <div className="list_button1">
                 <button><img src={images[index] ? ok : cancel} onClick={() => toggleImage(index)} alt="" /></button>
                 <button><img src={pen} alt="" onClick={() => handleEdit(index)} /></button>
                 <button><img onClick={() => handleDelete(index)} src={trash} alt="" /></button>
